@@ -12,7 +12,7 @@ defmodule RPG do
       :world
 
   """
-  def get_plant() do
-    Plant.plant(:catherby, 3, 45, 50) 
+  def test() do
+    :ok
   end
 end
