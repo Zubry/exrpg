@@ -20,25 +20,27 @@ defmodule Plant do
           |> Enum.map(fn _ -> :rand.uniform(100) <= hardiness end)
           |> Enum.find_index(fn x -> x end)
           |> (&(unless &1 == nil do
-            IO.inspect(&1)
             &1 + 1
           end)).()
       }
   end
 
-  def check(plant) do
-    %{
-      planted_at: planted_at,
-      growth_cycles: growth_cycles,
-      cycle_length: cycle_length
-    } = plant
-
+  def check(%{
+    planted_at: planted_at,
+    growth_cycles: growth_cycles,
+    cycle_length: cycle_length,
+    dies: dies
+  }) do
     cycles = DateTime.utc_now()
       |> DateTime.diff(planted_at)
       |> Kernel./(cycle_length)
       |> trunc
       |> min(growth_cycles)
 
-    { :alive, cycles }
+    if dies != nil and cycles >= dies do
+      { :dead, dies }
+    else
+      { :alive, cycles }
+    end
   end
 end
