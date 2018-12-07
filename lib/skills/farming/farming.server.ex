@@ -16,4 +16,8 @@ defmodule Farming do
   on :check, [ location ] do
     Farming.Model.check(state, location)
   end
+  
+  on :clear, [ location ] do
+    {:ok, Farming.Patches.clear(state, location)}
+  end
 end
