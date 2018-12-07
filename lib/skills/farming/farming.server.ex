@@ -16,6 +16,14 @@ defmodule Farming do
     server
       |> GenServer.call({ :plant, location, plant })
   end
+  
+  @doc """
+    Harvests the plant
+  """
+  def harvest(server, location) do
+    server
+      |> GenServer.call({ :harvest, location })
+  end
 
   @doc """
     Checks the growth status of the plant
@@ -36,23 +44,23 @@ defmodule Farming do
     This may need to be validated at some point.
   """
   def handle_call({ :plant, location, plant }, _from, state) do
-    state
-      |> Farming.Patches.add(location, Farming.Plant.create(plant))
-      |> case do
-        {:error, code} -> {:reply, {:error, code}, state}
-        {:ok, new_state} -> {:reply, :ok, new_state}
-      end
+    { status, new_state } = Farming.Model.plant(state, location, plant)
+    
+    {:reply, status, new_state}
+  end
+  
+  def handle_call({ :harvest, location }, _from, state) do
+    { status, new_state } = Farming.Model.harvest(state, location)
+    
+    {:reply, status, new_state}
   end
 
   @doc """
     Checks the growth status of the plant
   """
   def handle_call({ :check, location }, _from, state) do
-    state
-      |> Farming.Patches.check(location)
-      |> case do
-        :empty -> {:reply, :empty, state}
-        plant -> {:reply, plant |> Farming.Plant.check, state}
-      end
+    { status, new_state } = Farming.Model.check(state, location)
+    
+    {:reply, status, new_state}
   end
 end

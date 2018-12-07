@@ -11,8 +11,12 @@ defmodule Farming.Patches do
     end
   end
 
+  def put(patches, location, plant) do
+    Map.put(patches, location, plant)
+  end
+
   def clear(patches, location) do
-    Map.drop(patches, location)
+    Map.delete(patches, location)
   end
 
   def check(patches, location) do
