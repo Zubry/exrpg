@@ -24,4 +24,8 @@ defmodule Inventory do
     on :encumbered?, [] do
     
     end
+    
+    on :full?, [] do
+    
+    end
 end
