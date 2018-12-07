@@ -52,7 +52,7 @@ defmodule Farming.Server do
       |> Farming.Patches.check(location)
       |> case do
         :empty -> {:reply, :empty, state}
-        plant -> {:reply, plant, state}
+        plant -> {:reply, plant |> Farming.Plant.check, state}
       end
   end
 end
