@@ -14,13 +14,14 @@ defmodule Farming.Supervisor do
       {Registry, name: Farming.Registry, keys: :unique},
       {DynamicSupervisor, name: Farming.DynamicSupervisor, strategy: :one_for_one}
     ]
-    
+
     Supervisor.init(children, strategy: :one_for_one)
   end
-  
+
   def create(name) do
     DynamicSupervisor.start_child(Farming.DynamicSupervisor, {Farming, name: whereis(name)})
+    whereis(name)
   end
-  
+
   def whereis(name), do: {:via, Registry, {Farming.Registry, name} }
 end

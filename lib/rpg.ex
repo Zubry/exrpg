@@ -3,7 +3,8 @@ defmodule RPG do
 
   def start(_type, _args) do
     children = [
-      Farming.Supervisor
+      Farming.Supervisor,
+      Inventory.Supervisor
     ]
     Supervisor.start_link(children, strategy: :one_for_one)
   end
