@@ -1,4 +1,4 @@
-defmodule Farming.Server do
+defmodule Farming do
   use GenServer
 
   ## Client API
