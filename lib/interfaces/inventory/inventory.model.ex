@@ -1,5 +1,7 @@
 defmodule Inventory.Model do
-
+  def create do
+    %{}
+  end
 
   def add(inventory, name, { item, quantity }) when quantity > 0 do
     inventory
@@ -22,7 +24,7 @@ defmodule Inventory.Model do
     Map.delete(inventory, name)
   end
 
-  def has(inventory, name) do
+  def has?(inventory, name) do
     Map.has_key?(inventory, name)
   end
 end

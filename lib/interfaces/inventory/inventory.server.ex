@@ -1,23 +1,23 @@
 defmodule Inventory do
-    use Script
+  use Script
 
-    mount do
-        %{}
-    end
+  mount do
+    Inventory.Model.create
+  end
 
-    on :add, [{item, quantity}] do
+  on :add, [name, item] do
+    {:ok, Inventory.Model.add(state, name, item)}
+  end
 
-    end
+  on :remove, [name, quantity] do
+    {:ok, Inventory.Model.remove(state, name, quantity)}
+  end
 
-    on :remove, [name, quantity] do
+  on :drop, [name] do
+    {:ok, Inventory.Model.drop(state, name)}
+  end
 
-    end
-
-    on :drop, [name] do
-
-    end
-
-    on :has, [name] do
-
-    end
+  on :has?, [name] do
+    {:ok, Inventory.Model.has?(state, name)}
+  end
 end
