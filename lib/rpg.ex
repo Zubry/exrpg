@@ -1,18 +1,10 @@
 defmodule RPG do
-  @moduledoc """
-  Documentation for RPG.
-  """
+  use Application
 
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> RPG.hello
-      :world
-
-  """
-  def hello do
-    :world
+  def start(_type, _args) do
+    children = [
+      Farming.Supervisor
+    ]
+    Supervisor.start_link(children, strategy: :one_for_one)
   end
 end
