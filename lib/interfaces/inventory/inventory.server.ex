@@ -10,7 +10,11 @@ defmodule Inventory do
   end
 
   on :remove, [name, quantity] do
-    {:ok, Inventory.Model.remove(state, name, quantity)}
+    Inventory.Model.remove(state, name, quantity)
+      |> case do
+        {0, new_state} -> {:ok, Inventory.Model.drop(new_state, name)}
+        {_, new_state} -> {:ok, new_state}
+      end
   end
 
   on :drop, [name] do
@@ -18,6 +22,14 @@ defmodule Inventory do
   end
 
   on :has?, [name] do
-    {:ok, Inventory.Model.has?(state, name)}
+    {{:ok, Inventory.Model.has?(state, name)}, state}
+  end
+
+  on :get, [name] do
+    {{:ok, Inventory.Model.get(state, name)}, state}
+  end
+
+  on :all, [] do
+    {{:ok, state}, state}
   end
 end

@@ -11,12 +11,13 @@ defmodule Inventory.Model do
   end
 
   def remove(inventory, name, quantity) when quantity > 0 do
-    if map.has_key?(inventory, name) do
-      Map.update!(inventory, name, fn ({ item, quantity2 }) ->
-        { item, quantity2 - quantity }
+    if Map.has_key?(inventory, name) do
+      Map.get_and_update!(inventory, name, fn ({ item, quantity2 }) ->
+        new_quantity = max(quantity2 - quantity, 0)
+        {new_quantity, {item, new_quantity}}
       end)
     else
-      inventory
+      {0, inventory}
     end
   end
 
@@ -26,5 +27,9 @@ defmodule Inventory.Model do
 
   def has?(inventory, name) do
     Map.has_key?(inventory, name)
+  end
+
+  def get(inventory, name) do
+    Map.get(inventory, name)
   end
 end
